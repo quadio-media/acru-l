@@ -1,3 +1,6 @@
-# Python Open Source Project Template
+# AWS Cloud Resource Utils - Library (ACRU-L)
 
-This repository is a template to be used for open source projects written in Python.
+_ə-kroo͞′əl_
+
+An open source framework for collecting and reusing AWS CDK constructs and stacks.
+
