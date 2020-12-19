@@ -1,4 +1,4 @@
-from CHANGE_ME import __version__
+from acrul import __version__
 
 
 def test_version():

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "CHANGE_ME"
+name = "acrul"
 version = "0.1.0"
 description = ""
 authors = ["Anthony Almarza <anthony.almarza@gmail.com>"]
@@ -31,7 +31,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.coverage.run]
 source = [
-    "CHANGE_ME",
+    "acrul",
 ]
 omit = [
     "tests/*",
