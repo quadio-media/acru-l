@@ -41,17 +41,15 @@ jobs:
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------
-      - run: poetry run coverage run -m pytest
-      - run: poetry run coverage report --skip-empty -m
+      - name: Run Tests
+        run: poetry run coverage run -m pytest
+      - name: Generate reports
+        run: poetry run coverage report
       #----------------------------------------------
       #             upload coverage stats
-      # (requires CODECOV_TOKEN in repository secrets)
       #----------------------------------------------
       - name: Upload coverage
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-          file: ./.coverage
+        run: poetry run codecov
   lint:
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,60 @@
+[[stack]]
+name = "MyNetwork"
+stack_class = "acru_l.stacks.NetworkStack"
+[stack.config.vpc]
+cidr = "10.0.12.0/16"
+export_name = "MyVPC"
+[stack.config.hosted_zone]
+domain_name = "quadio.app"
+export_name = "MyHostedZone"
+use_github_pages = false
+
+[[stack]]
+name = "MyCerts"
+stack_class = "acru_l.stacks.CertificatesStack"
+[stack.config]
+domain_name = "quadio.app"
+export_prefix = "QuadioApp"
+subdomains = [
+    "api",
+    "music",
+]
+
+
+[[stack]]
+name = "DummyDjango"
+stack_class = "acru_l.stacks.LucarioStack"
+
+[stack.config]
+hosted_zone_domain_name = "quadio.app"
+cert_export_name = "QaudioAppWildCardCertificate"
+version = "0.0.0"
+vpc_name = "MyVPC"
+
+[stack.config.rds_config]
+db_name = "test"
+db_username = "myusernameiscool"
+#multi_az = false
+#deletion_protection = false
+#setup_alarms = false
+#instance_class = "BURSTABLE3"
+#instance_size = "MICRO"
+
+[stack.config.service_config]
+domain_name = "api.quadio.app"
+project_source_path = "./src/"
+health_check_url = "https://api.quadio.app/"
+secrets = [
+    {name = "Boo", arn_key = "boo", password_length = 16, include_space = false, exclude_punctuation = true},
+]
+[stack.config.service_config.environment]
+foo = "bar"
+
+[stack.config.service_config.pre_deploy_config]
+source_path = "./tests/pre_deploy"
+properties = {app_label = "db", migration_name = "0001"}
+[stack.config.service_config.post_deploy_config]
+source_path = "./tests/post_deploy"
+properties = {app_label = "db", migration_name = "0002"}
+
+

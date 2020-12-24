@@ -1,4 +1,4 @@
-from acrul import __version__
+from acru_l import __version__
 
 
 def test_version():
