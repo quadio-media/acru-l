@@ -50,6 +50,8 @@ jobs:
       #----------------------------------------------
       - name: Upload coverage
         run: poetry run codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   lint:
     runs-on: ubuntu-latest
     steps:
