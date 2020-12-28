@@ -8,6 +8,7 @@ from aws_cdk import (
     aws_iam as iam,
     aws_lambda as _lambda,
     aws_lambda_python as lambda_python,
+    aws_route53 as route53,
 )
 
 from acru_l.resources.custom_resources import PythonCustomResource
@@ -16,9 +17,14 @@ from acru_l.resources.custom_resources import PythonCustomResource
 dirname = os.path.dirname(__file__)
 
 
-class SES(core.Construct):
+class SESVerification(core.Construct):
     def __init__(
-        self, scope: core.Construct, id: str, *, emails: Optional[List[str]]
+        self,
+        scope: core.Construct,
+        id: str,
+        *,
+        hosted_zone: route53.HostedZone,
+        emails: Optional[List[str]]
     ):
         super().__init__(scope, id)
 
@@ -35,8 +41,8 @@ class SES(core.Construct):
             source_dir=os.path.join(dirname, "domain_validation"),
             handler="on_event",
             environment={
-                "DOMAIN": self.hosted_zone.zone_name,
-                "HOSTED_ZONE_ID": self.hosted_zone.hosted_zone_id,
+                "DOMAIN": hosted_zone.zone_name,
+                "HOSTED_ZONE_ID": hosted_zone.hosted_zone_id,
             },
             layers=[
                 ses_config_layer,
@@ -53,7 +59,7 @@ class SES(core.Construct):
                 iam.PolicyStatement(
                     effect=iam.Effect.ALLOW,
                     actions=["route53:ChangeResourceRecordSets"],
-                    resources=[self.hosted_zone.hosted_zone_arn],
+                    resources=[hosted_zone.hosted_zone_arn],
                 ),
             ],
         )
@@ -62,7 +68,7 @@ class SES(core.Construct):
         PythonCustomResource(
             self,
             "SESVerifyEmails",
-            source_dir=os.path.join(dirname, "ses_verified_emails"),
+            source_dir=os.path.join(dirname, "verified_emails"),
             handler="on_event",
             layers=[
                 ses_config_layer,

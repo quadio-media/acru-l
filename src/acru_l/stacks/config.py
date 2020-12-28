@@ -99,8 +99,8 @@ class APIConfig(BaseModel):
     cert_export_name: str
     version: str
     vpc_name: str
+    service_config: ServiceConfig
     rds_config: Optional[RDSConfig]
-    service_config: Optional[ServiceConfig]
 
     class Config:
         extra = Extra.allow
@@ -110,6 +110,14 @@ class CertConfig(BaseModel):
     domain_name: str
     export_prefix: str = ""
     subdomains: Optional[List[str]] = None
+
+    class Config:
+        extra = Extra.allow
+
+
+class SESConfig(BaseModel):
+    hosted_zone_domain_name: str
+    emails: Optional[List[str]] = None
 
     class Config:
         extra = Extra.allow

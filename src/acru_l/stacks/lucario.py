@@ -40,34 +40,37 @@ class LucarioStack(BaseStack):
             self, "HostedZone", domain_name=config.hosted_zone_domain_name
         )
 
-        db_config = config.rds_config
-        database = PostgresInstance(
-            self,
-            f"{id}PG",
-            db_name=db_config.db_name,
-            db_username=db_config.db_username,
-            vpc=vpc,
-            multi_az=db_config.multi_az,
-            deletion_protection=db_config.deletion_protection,
-            instance_type=db_config.instance_type,
-        )
-        if db_config.setup_alarms:
-            database.setup_alarms()
-
-        # TODO: Add options for Redis Elasticache
         service_config = config.service_config
         environment_variables = service_config.environment or {}
-        environment_variables.update(
-            {
-                "DB_NAME": database.db_name,
-                "DB_USERNAME": database.db_username,
-                "DB_HOST": database.endpoint_address,
-                "DB_PORT": database.endpoint_port,
-                "DB_SECRET_ID": database.creds.secret_arn,
-            }
-        )
+        secret_arns = []
 
-        secret_arns = [database.creds.secret_arn]
+        db_config = config.rds_config
+        if db_config is not None:
+            database = PostgresInstance(
+                self,
+                f"{id}PG",
+                db_name=db_config.db_name,
+                db_username=db_config.db_username,
+                vpc=vpc,
+                multi_az=db_config.multi_az,
+                deletion_protection=db_config.deletion_protection,
+                instance_type=db_config.instance_type,
+            )
+            if db_config.setup_alarms:
+                database.setup_alarms()
+
+            environment_variables.update(
+                {
+                    "DB_NAME": database.db_name,
+                    "DB_USERNAME": database.db_username,
+                    "DB_HOST": database.endpoint_address,
+                    "DB_PORT": database.endpoint_port,
+                    "DB_SECRET_ID": database.creds.secret_arn,
+                }
+            )
+            secret_arns += [database.creds.secret_arn]
+
+        # TODO: Add options for Redis Elasticache
 
         certificate = acm.Certificate.from_certificate_arn(
             self,

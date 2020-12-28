@@ -20,6 +20,12 @@ subdomains = [
     "music",
 ]
 
+[[stack]]
+name = "MyEmails"
+stack_class = "acru_l.stacks.EmailsStack"
+[stack.config]
+hosted_zone_domain_name = "quadio.app"
+emails = ["admin@quadio.app", "help@quadio.app"]
 
 [[stack]]
 name = "DummyDjango"

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acru-l"
-version = "0.0.0"
+version = "0.1.0"
 description = ""
 authors = ["Anthony Almarza <anthony.almarza@gmail.com>"]
 license = "MIT"
