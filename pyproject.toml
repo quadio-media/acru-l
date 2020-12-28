@@ -33,6 +33,7 @@ pydantic = "^1.7.3"
 "aws-cdk.aws-lambda-nodejs" = "1.79.0"
 "aws-cdk.aws-apigatewayv2-integrations" = "1.79.0"
 acru-l-toolkit = "^0.1.0"
+toml = "^0.10.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6"
