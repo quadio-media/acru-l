@@ -1176,7 +1176,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "constructs"
-version = "3.2.78"
+version = "3.2.80"
 description = "A programming model for composable configuration"
 category = "main"
 optional = false
@@ -1210,7 +1210,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 
 [[package]]
 name = "environs"
-version = "9.2.0"
+version = "9.3.0"
 description = "simplified environment variable parsing"
 category = "main"
 optional = false
@@ -1221,9 +1221,9 @@ marshmallow = ">=2.7.0"
 python-dotenv = "*"
 
 [package.extras]
-dev = ["pytest", "dj-database-url", "dj-email-url", "django-cache-url", "flake8 (==3.8.4)", "flake8-bugbear (==20.1.4)", "mypy (==0.790)", "pre-commit (>=2.4,<3.0)", "tox"]
+dev = ["pytest", "dj-database-url", "dj-email-url", "django-cache-url", "flake8 (==3.8.4)", "flake8-bugbear (==20.11.1)", "mypy (==0.790)", "pre-commit (>=2.4,<3.0)", "tox"]
 django = ["dj-database-url", "dj-email-url", "django-cache-url"]
-lint = ["flake8 (==3.8.4)", "flake8-bugbear (==20.1.4)", "mypy (==0.790)", "pre-commit (>=2.4,<3.0)"]
+lint = ["flake8 (==3.8.4)", "flake8-bugbear (==20.11.1)", "mypy (==0.790)", "pre-commit (>=2.4,<3.0)"]
 tests = ["pytest", "dj-database-url", "dj-email-url", "django-cache-url"]
 
 [[package]]
@@ -1334,18 +1334,18 @@ python-versions = "*"
 
 [[package]]
 name = "jedi"
-version = "0.17.2"
+version = "0.18.0"
 description = "An autocompletion tool for Python that can be used for text editors."
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.6"
 
 [package.dependencies]
-parso = ">=0.7.0,<0.8.0"
+parso = ">=0.8.0,<0.9.0"
 
 [package.extras]
-qa = ["flake8 (==3.7.9)"]
-testing = ["Django (<3.1)", "colorama", "docopt", "pytest (>=3.9.0,<5.0.0)"]
+qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
+testing = ["Django (<3.1)", "colorama", "docopt", "pytest (<6.0.0)"]
 
 [[package]]
 name = "jmespath"
@@ -1428,14 +1428,15 @@ pyparsing = ">=2.0.2"
 
 [[package]]
 name = "parso"
-version = "0.7.1"
+version = "0.8.1"
 description = "A Python Parser"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.6"
 
 [package.extras]
-testing = ["docopt", "pytest (>=3.0.7)"]
+qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
+testing = ["docopt", "pytest (<6.0.0)"]
 
 [[package]]
 name = "pathspec"
@@ -1603,7 +1604,7 @@ dev = ["pre-commit", "tox", "pytest-asyncio"]
 
 [[package]]
 name = "pytest-picked"
-version = "0.4.4"
+version = "0.4.6"
 description = "Run the tests related to the changed files"
 category = "dev"
 optional = false
@@ -2081,8 +2082,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 constructs = [
-    {file = "constructs-3.2.78-py3-none-any.whl", hash = "sha256:f72dadc7d26bbb737111ada5a475f84c0ad2c53b3bd5b455d912884fd85bb24e"},
-    {file = "constructs-3.2.78.tar.gz", hash = "sha256:e3f4a127a32fdaa4c8bc1302fc69c3f086966c7a5b61244b082d213a5b4e1e3a"},
+    {file = "constructs-3.2.80-py3-none-any.whl", hash = "sha256:0e375b4cf1ecc567d10c35e70f523d7850fcc40c8cf25409f2d90ce3169d0ea3"},
+    {file = "constructs-3.2.80.tar.gz", hash = "sha256:80e10fde8b8ef16e072c61b9b3daf6d16578b8b0bb5d27b3ea3b6319af9738c6"},
 ]
 coverage = [
     {file = "coverage-5.3.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:fabeeb121735d47d8eab8671b6b031ce08514c86b7ad8f7d5490a7b6dcd6267d"},
@@ -2140,8 +2141,8 @@ decorator = [
     {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 environs = [
-    {file = "environs-9.2.0-py2.py3-none-any.whl", hash = "sha256:10dca340bff9c912e99d237905909390365e32723c2785a9f3afa6ef426c53bc"},
-    {file = "environs-9.2.0.tar.gz", hash = "sha256:36081033ab34a725c2414f48ee7ec7f7c57e498d8c9255d61fbc7f2d4bf60865"},
+    {file = "environs-9.3.0-py2.py3-none-any.whl", hash = "sha256:dc279947d8ce83df334031f648aa8fe4bbba12c1e3072b2eecce2ee2be8ada21"},
+    {file = "environs-9.3.0.tar.gz", hash = "sha256:181fe8be5bce2512100de588b9f5ac01d8d5a867069a179efd4f3b7721036a0a"},
 ]
 factory-boy = [
     {file = "factory_boy-3.1.0-py2.py3-none-any.whl", hash = "sha256:d8626622550c8ba31392f9e19fdbcef9f139cf1ad643c5923f20490a7b3e2e3d"},
@@ -2176,8 +2177,8 @@ ipython-genutils = [
     {file = "ipython_genutils-0.2.0.tar.gz", hash = "sha256:eb2e116e75ecef9d4d228fdc66af54269afa26ab4463042e33785b887c628ba8"},
 ]
 jedi = [
-    {file = "jedi-0.17.2-py2.py3-none-any.whl", hash = "sha256:98cc583fa0f2f8304968199b01b6b4b94f469a1f4a74c1560506ca2a211378b5"},
-    {file = "jedi-0.17.2.tar.gz", hash = "sha256:86ed7d9b750603e4ba582ea8edc678657fb4007894a12bcf6f4bb97892f31d20"},
+    {file = "jedi-0.18.0-py2.py3-none-any.whl", hash = "sha256:18456d83f65f400ab0c2d3319e48520420ef43b23a086fdc05dff34132f0fb93"},
+    {file = "jedi-0.18.0.tar.gz", hash = "sha256:92550a404bad8afed881a137ec9a461fed49eca661414be45059329614ed0707"},
 ]
 jmespath = [
     {file = "jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"},
@@ -2220,8 +2221,8 @@ packaging = [
     {file = "packaging-20.8.tar.gz", hash = "sha256:78598185a7008a470d64526a8059de9aaa449238f280fc9eb6b13ba6c4109093"},
 ]
 parso = [
-    {file = "parso-0.7.1-py2.py3-none-any.whl", hash = "sha256:97218d9159b2520ff45eb78028ba8b50d2bc61dcc062a9682666f2dc4bd331ea"},
-    {file = "parso-0.7.1.tar.gz", hash = "sha256:caba44724b994a8a5e086460bb212abc5a8bc46951bf4a9a1210745953622eb9"},
+    {file = "parso-0.8.1-py2.py3-none-any.whl", hash = "sha256:15b00182f472319383252c18d5913b69269590616c947747bc50bf4ac768f410"},
+    {file = "parso-0.8.1.tar.gz", hash = "sha256:8519430ad07087d4c997fda3a7918f7cfa27cb58972a8c89c2a0295a1c940e9e"},
 ]
 pathspec = [
     {file = "pathspec-0.8.1-py2.py3-none-any.whl", hash = "sha256:aa0cb481c4041bf52ffa7b0d8fa6cd3e88a2ca4879c533c9153882ee2556790d"},
@@ -2308,7 +2309,8 @@ pytest-mock = [
     {file = "pytest_mock-3.4.0-py3-none-any.whl", hash = "sha256:c0fc979afac4aaba545cbd01e9c20736eb3fefb0a066558764b07d3de8f04ed3"},
 ]
 pytest-picked = [
-    {file = "pytest-picked-0.4.4.tar.gz", hash = "sha256:1c7c070d622403e109d2e8cd8054e44c117065b5ab79dc39cb5697ffd867309f"},
+    {file = "pytest-picked-0.4.6.tar.gz", hash = "sha256:e1ec7aee5d2cd3a91f676fd0afd7620a26c0ccc21e604152bbc5137f430e6c00"},
+    {file = "pytest_picked-0.4.6-py3-none-any.whl", hash = "sha256:8bc744222a39ecc84cbcb87251fb69810ee576a80f84cc77fc47222818b3fa7c"},
 ]
 pytest-responses = [
     {file = "pytest-responses-0.4.0.tar.gz", hash = "sha256:cef8c360273842700733c7849b75219f425edc3f8e22704114778bde3e08e3f7"},

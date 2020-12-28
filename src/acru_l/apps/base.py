@@ -14,7 +14,7 @@ class AppConfig(BaseSettings):
     AWS_ACCOUNT_ID: str
     AWS_REGION: str
     COMMIT_SHA: str
-    CONFIG_FILE_PATH: str = "./acru_l.toml"
+    CONFIG_FILE_PATH: str = "./acru-l.toml"
 
     class Config:
         case_sensitive = True
