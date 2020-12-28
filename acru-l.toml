@@ -13,12 +13,12 @@ use_github_pages = false
 name = "MyCerts"
 stack_class = "acru_l.stacks.CertificatesStack"
 [stack.config]
-domain_name = "quadio.app"
-export_prefix = "QuadioApp"
-subdomains = [
-    "api",
-    "music",
-]
+hosted_zone_domain_name = "quadio.app"
+[[stack.config.certificates]]
+name = "MyCert"
+domain_name = "*.quadio.app"
+export_name = "MyCertARN"
+
 
 [[stack]]
 name = "MyEmails"

@@ -107,9 +107,14 @@ class APIConfig(BaseModel):
 
 
 class CertConfig(BaseModel):
+    name: str
     domain_name: str
-    export_prefix: str = ""
-    subdomains: Optional[List[str]] = None
+    export_name: str
+
+
+class CertsConfig(BaseModel):
+    hosted_zone_domain_name: str
+    certificates: List[CertConfig]
 
     class Config:
         extra = Extra.allow
