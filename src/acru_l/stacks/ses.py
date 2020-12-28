@@ -1,7 +1,4 @@
-from aws_cdk import (
-    core,
-    aws_route53 as route53
-)
+from aws_cdk import core, aws_route53 as route53
 
 from acru_l.resources.ses import SESVerification
 from acru_l.stacks.base import BaseStack
@@ -14,11 +11,7 @@ class EmailsStack(BaseStack):
     config: SESConfig
 
     def __init__(
-        self,
-        scope: core.Construct,
-        id: str,
-        env: core.Environment,
-        **kwargs
+        self, scope: core.Construct, id: str, env: core.Environment, **kwargs
     ):
         super().__init__(scope, id, env=env, **kwargs)
         config = self.config
@@ -26,8 +19,5 @@ class EmailsStack(BaseStack):
             self, "HostedZone", domain_name=config.hosted_zone_domain_name
         )
         SESVerification(
-            self,
-            "Verification",
-            hosted_zone=hosted_zone,
-            emails=config.emails
+            self, "Verification", hosted_zone=hosted_zone, emails=config.emails
         )
