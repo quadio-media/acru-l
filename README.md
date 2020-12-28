@@ -4,6 +4,16 @@ Pronounced _Ah-crew-el (*ə-kroo͞′l*)_
 
 An open source framework for collecting and reusing AWS CDK constructs and stacks.
 
+## Why?
+The problem with infrastructure as code ...
+
+Monorepos...
+Snowflake code...
+
+Confounding application source code with devops 
+
+A strict interface and reuse patterns
+
 ## Installation
 
 `poetry add -D acru-l`
@@ -24,11 +34,12 @@ Extended constructs with set defaults
 
 ### Services
 
-REAL (RDS-Elasticache-APIGateway-Lambda)
-
-LAD (Lambda-APIGateway-DynamoDB)
+TBD
 
 ### Stacks
-Postgres Redis REAL Stack
 
-Global LAD Stack
+TBD
+
+### Apps
+
+TBD

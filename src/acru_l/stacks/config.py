@@ -17,7 +17,7 @@ class HostedZoneConfig(BaseModel):
 
 class NetworkConfig(BaseModel):
     vpc: VpcConfig
-    hosted_zone: HostedZoneConfig
+    hosted_zone: Optional[HostedZoneConfig] = None
 
 
 class SecretsConfig(BaseModel):

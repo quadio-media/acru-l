@@ -24,10 +24,11 @@ class NetworkStack(BaseStack):
             cidr=config.vpc.cidr,
             export_name=config.vpc.export_name,
         )
-        HostedZone(
-            self,
-            "HostedZone",
-            domain_name=config.hosted_zone.domain_name,
-            export_name=config.hosted_zone.export_name,
-            use_github_pages=config.hosted_zone.use_github_pages,
-        )
+        if config.hosted_zone is not None:
+            HostedZone(
+                self,
+                "HostedZone",
+                domain_name=config.hosted_zone.domain_name,
+                export_name=config.hosted_zone.export_name,
+                use_github_pages=config.hosted_zone.use_github_pages,
+            )
