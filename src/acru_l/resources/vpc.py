@@ -21,7 +21,6 @@ class VPC(core.Construct):
         subnet1 = ec2.SubnetConfiguration(
             name="Private", subnet_type=ec2.SubnetType.PRIVATE, cidr_mask=24
         )
-
         vpc = ec2.Vpc(
             self,
             "VPC",

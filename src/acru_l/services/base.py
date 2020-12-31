@@ -81,6 +81,8 @@ class Service(core.Construct):
             envvar_id = f"{secrets_config.arn_key.upper()}_ID"
             self.secret_arns.append(_secret.secret_arn)
             self.environment_variables[envvar_id] = _secret.secret_arn
+        bucket_name = self.private_bucket.bucket_name
+        self.environment_variables["PRIVATE_S3_BUCKET_NAME"] = bucket_name
 
     def package_project(
         self, *, source_path: str

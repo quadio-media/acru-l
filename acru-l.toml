@@ -2,7 +2,7 @@
 name = "MyNetwork"
 stack_class = "acru_l.stacks.NetworkStack"
 [stack.config.vpc]
-cidr = "10.0.12.0/16"
+cidr = "10.12.0.0/16"
 export_name = "MyVPC"
 [stack.config.hosted_zone]
 domain_name = "quadio.app"
@@ -55,6 +55,7 @@ secrets = [
 ]
 [stack.config.service_config.environment]
 foo = "bar"
+WSGI_APPLICATION = "path.to.wsgi.application"
 
 [stack.config.service_config.pre_deploy_config]
 source_path = "./tests/pre_deploy"
@@ -62,5 +63,3 @@ properties = {app_label = "db", migration_name = "0001"}
 [stack.config.service_config.post_deploy_config]
 source_path = "./tests/post_deploy"
 properties = {app_label = "db", migration_name = "0002"}
-
-
