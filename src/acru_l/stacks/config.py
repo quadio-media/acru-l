@@ -5,6 +5,7 @@ from aws_cdk import core, aws_ec2 as ec2, aws_secretsmanager as secretsmanager
 
 
 class VpcConfig(BaseModel):
+    name: str
     cidr: str
     export_name: str
 
