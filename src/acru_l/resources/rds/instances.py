@@ -22,6 +22,7 @@ class RDSInstance(core.Construct):
         *,
         db_name: str,
         db_username: str,
+        add_proxy: bool,
         vpc: ec2.Vpc,
         engine: rds.IInstanceEngine,
         allocated_storage=20,
@@ -49,7 +50,7 @@ class RDSInstance(core.Construct):
         # Creates a security group for AWS RDS
         sg_rds = ec2.SecurityGroup(
             self,
-            f"{id}SecurityGroup",
+            "SecurityGroup",
             vpc=vpc,
         )
 
@@ -61,7 +62,7 @@ class RDSInstance(core.Construct):
         )
         self.creds = secretsmanager.Secret(
             self,
-            f"{id}Credentials",
+            "Credentials",
             generate_secret_string=secretsmanager.SecretStringGenerator(
                 exclude_punctuation=True,
                 include_space=False,
@@ -72,7 +73,7 @@ class RDSInstance(core.Construct):
 
         self.instance = rds.DatabaseInstance(
             self,
-            f"{id}Instance",
+            "Instance",
             allocated_storage=allocated_storage,
             deletion_protection=deletion_protection,
             credentials=rds.Credentials.from_password(
@@ -95,6 +96,20 @@ class RDSInstance(core.Construct):
             cloudwatch_logs_retention=cloudwatch_logs_retention,
             auto_minor_version_upgrade=auto_minor_version_upgrade,
         )
+        self.port = port
+        self.proxy = None
+        if add_proxy:
+            self.proxy = self.instance.add_proxy(
+                "Proxy",
+                secrets=[self.creds],
+                vpc=vpc,
+                db_proxy_name=f"{scope.stack_name}-{id}-Proxy",
+                security_groups=[sg_rds],
+            )
+
+    @property
+    def connection_interface(self):
+        return self.proxy or self.instance
 
     @property
     def vpc(self) -> ec2.Vpc:
@@ -106,12 +121,14 @@ class RDSInstance(core.Construct):
 
     @property
     def endpoint_address(self) -> str:
+        if self.proxy:
+            return self.proxy.endpoint
         return self.instance.db_instance_endpoint_address
 
     def setup_alarms(self):
         cloudwatch.Alarm(
             self,
-            f"{self.id}HighCPU",
+            "HighCPU",
             metric=self.instance.metric_cpu_utilization(
                 unit=cloudwatch.Unit.PERCENT
             ),
@@ -123,7 +140,7 @@ class RDSInstance(core.Construct):
 
         cloudwatch.Alarm(
             self,
-            f"{self.id}HighSwapSpace",
+            "HighSwapSpace",
             metric=self.instance.metric(
                 "SwapUsage", unit=cloudwatch.Unit.BYTES
             ),
@@ -135,7 +152,7 @@ class RDSInstance(core.Construct):
         )
         cloudwatch.Alarm(
             self,
-            f"{self.id}HighReadLatency",
+            "HighReadLatency",
             metric=self.instance.metric(
                 "ReadLatency", unit=cloudwatch.Unit.SECONDS
             ),
@@ -147,7 +164,7 @@ class RDSInstance(core.Construct):
         )
         cloudwatch.Alarm(
             self,
-            f"{self.id}HighWriteLatency",
+            "HighWriteLatency",
             metric=self.instance.metric(
                 "WriteLatency", unit=cloudwatch.Unit.SECONDS
             ),
@@ -159,7 +176,7 @@ class RDSInstance(core.Construct):
         )
         cloudwatch.Alarm(
             self,
-            f"{self.id}LowFreeStorage",
+            "LowFreeStorage",
             metric=self.instance.metric_free_storage_space(
                 unit=cloudwatch.Unit.BYTES
             ),
@@ -171,7 +188,7 @@ class RDSInstance(core.Construct):
         )
         cloudwatch.Alarm(
             self,
-            f"{self.id}LowFreeMemory",
+            "LowFreeMemory",
             metric=self.instance.metric_freeable_memory(
                 unit=cloudwatch.Unit.BYTES
             ),
@@ -185,5 +202,7 @@ class RDSInstance(core.Construct):
 
 class PostgresInstance(RDSInstance):
     def __init__(self, *args, **kwargs):
-        kwargs["engine"] = rds.DatabaseInstanceEngine.POSTGRES
+        kwargs["engine"] = rds.DatabaseInstanceEngine.postgres(
+            version=rds.PostgresEngineVersion.VER_11_5
+        )
         super().__init__(*args, **kwargs)

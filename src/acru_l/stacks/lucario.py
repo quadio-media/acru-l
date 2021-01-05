@@ -45,12 +45,14 @@ class LucarioStack(BaseStack):
         secret_arns = []
 
         db_config = config.rds_config
+        database = None
         if db_config is not None:
             database = PostgresInstance(
                 self,
-                f"{id}PG",
+                "PG",
                 db_name=db_config.db_name,
                 db_username=db_config.db_username,
+                add_proxy=db_config.add_proxy,
                 vpc=vpc,
                 multi_az=db_config.multi_az,
                 deletion_protection=db_config.deletion_protection,
@@ -91,6 +93,7 @@ class LucarioStack(BaseStack):
             certificate=certificate,
             hosted_zone=hosted_zone,
             domain_name=service_config.domain_name,
+            local_environment_variables=service_config.local_environment,
             environment_variables=environment_variables,
             secret_arns=secret_arns,
             project_source_path=service_config.project_source_path,
@@ -99,3 +102,10 @@ class LucarioStack(BaseStack):
             canary_config=canary_config,
             secrets=service_config.secrets,
         )
+        # TODO: add dependency from db to service so that the build happens
+        #       in the right order.
+        # if database:
+        #     self.service.allow_connection_to(
+        #         database.connection_interface,
+        #         ec2.Port.tcp(database.port)
+        #     )

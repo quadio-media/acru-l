@@ -10,6 +10,7 @@ class VPC(core.Construct):
         scope: core.Construct,
         id: str,
         *,
+        name: str,
         cidr: str = "10.1.0.0/16",
         export_name: str = "VpcId"
     ):
@@ -23,7 +24,7 @@ class VPC(core.Construct):
         )
         vpc = ec2.Vpc(
             self,
-            "VPC",
+            name,
             cidr=cidr,
             enable_dns_hostnames=True,
             enable_dns_support=True,

@@ -2,6 +2,7 @@
 name = "MyNetwork"
 stack_class = "acru_l.stacks.NetworkStack"
 [stack.config.vpc]
+name = "ID"
 cidr = "10.12.0.0/16"
 export_name = "MyVPC"
 [stack.config.hosted_zone]
@@ -40,6 +41,7 @@ vpc_name = "MyVPC"
 [stack.config.rds_config]
 db_name = "test"
 db_username = "myusernameiscool"
+add_proxy = true
 #multi_az = false
 #deletion_protection = false
 #setup_alarms = false
@@ -52,6 +54,9 @@ project_source_path = "./src/"
 health_check_url = "https://api.quadio.app/"
 secrets = [
     {name = "Boo", arn_key = "boo", password_length = 16, include_space = false, exclude_punctuation = true},
+]
+local_environment = [
+    "FOO"
 ]
 [stack.config.service_config.environment]
 foo = "bar"

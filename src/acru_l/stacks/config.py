@@ -1,4 +1,4 @@
-from typing import Optional, Mapping, Any, TypeVar, List
+from typing import Optional, Mapping, Any, TypeVar, List, Dict
 
 from pydantic import BaseModel, Extra
 from aws_cdk import core, aws_ec2 as ec2, aws_secretsmanager as secretsmanager
@@ -13,6 +13,8 @@ class HostedZoneConfig(BaseModel):
     domain_name: str
     export_name: str
     use_github_pages: bool = False
+    github_username: Optional[str] = None
+    github_cname: Optional[str] = None
 
 
 class NetworkConfig(BaseModel):
@@ -65,7 +67,8 @@ class ServiceConfig(BaseModel):
     domain_name: str
     project_source_path: str
     secrets: Optional[List[SecretsConfig]]
-    environment: Optional[Mapping[str, Any]]
+    local_environment: Optional[List[str]]
+    environment: Optional[Dict[str, Any]]
     health_check_url: Optional[str] = None
     pre_deploy_config: Optional[CustomResourceConfig] = None
     post_deploy_config: Optional[CustomResourceConfig] = None
@@ -77,6 +80,7 @@ class ServiceConfig(BaseModel):
 class RDSConfig(BaseModel):
     db_name: str
     db_username: str
+    add_proxy: bool = False
     multi_az: bool = False
     deletion_protection: bool = False
     setup_alarms: bool = False

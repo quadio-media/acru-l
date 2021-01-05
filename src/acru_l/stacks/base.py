@@ -1,11 +1,14 @@
+from typing import Type
+
 from aws_cdk import (
     core,
 )
+from pydantic import BaseModel
 
 
 class BaseStack(core.Stack):
 
-    config_class = NotImplemented
+    config_class: Type[BaseModel]
 
     def __init__(
         self,

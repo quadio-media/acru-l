@@ -1,1 +1,1 @@
-acru-l-toolkit>=0.0.0,<1.0.0
+acru-l-toolkit>=1.0.0a0,<2.0.0

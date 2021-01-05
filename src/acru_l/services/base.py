@@ -1,3 +1,5 @@
+import os
+
 from aws_cdk import (
     core,
     aws_certificatemanager as acm,
@@ -10,6 +12,8 @@ from aws_cdk import (
     aws_s3 as s3,
 )
 from typing import Optional, List
+
+from aws_cdk.aws_ec2 import IConnectable
 
 from acru_l.resources.apigateway import LambdaAPIGateway
 from acru_l.resources.canary import Canary
@@ -26,7 +30,7 @@ class Service(core.Construct):
 
     pre_deploy: Optional[CustomResource] = None
     post_deploy: Optional[CustomResource] = None
-    canary: Optional[Canary]
+    canary: Optional[Canary] = None
     layers: List[_lambda.LayerVersion]
     api_lambda: Function
     apigw: LambdaAPIGateway
@@ -43,13 +47,14 @@ class Service(core.Construct):
         hosted_zone: route53.HostedZone,
         runtime: _lambda.Runtime = _lambda.Runtime.PYTHON_3_8,
         vpc: Optional[ec2.Vpc] = None,
+        local_environment_variables: Optional[List[str]] = None,
         environment_variables: Optional[dict] = None,
         secrets: Optional[List[SecretsConfig]] = None,
         secret_arns: Optional[List] = None,
         function_class=Function,
-        pre_deploy_config: CustomResourceConfig,
-        post_deploy_config: CustomResourceConfig,
-        canary_config: CanaryConfig,
+        pre_deploy_config: Optional[CustomResourceConfig],
+        post_deploy_config: Optional[CustomResourceConfig],
+        canary_config: Optional[CanaryConfig],
     ):
         super().__init__(scope, id)
         self.function_class = function_class
@@ -61,7 +66,10 @@ class Service(core.Construct):
         self.environment_variables = environment_variables or {}
         self.secret_arns = secret_arns or []
 
-        self.setup_environment(secrets=secrets)
+        self.setup_environment(
+            secrets=secrets,
+            local_environment_variables=local_environment_variables,
+        )
         self.layers = self.package_project(source_path=project_source_path)
 
         self.add_pre_deploy(config=pre_deploy_config)
@@ -74,13 +82,23 @@ class Service(core.Construct):
         self.add_canary(config=canary_config)
         self.add_post_deploy(config=post_deploy_config)
 
-    def setup_environment(self, *, secrets: Optional[List[SecretsConfig]]):
+    def setup_environment(
+        self,
+        *,
+        secrets: Optional[List[SecretsConfig]],
+        local_environment_variables: Optional[List[str]],
+    ):
         secrets = secrets or []
         for secrets_config in secrets:
             _secret = secrets_config.create(scope=self)
-            envvar_id = f"{secrets_config.arn_key.upper()}_ID"
+            envvar_id = secrets_config.arn_key.upper()
             self.secret_arns.append(_secret.secret_arn)
             self.environment_variables[envvar_id] = _secret.secret_arn
+
+        names = local_environment_variables or []
+        for name in names:
+            self.environment_variables[name] = os.environ[name]
+
         bucket_name = self.private_bucket.bucket_name
         self.environment_variables["PRIVATE_S3_BUCKET_NAME"] = bucket_name
 
@@ -144,42 +162,58 @@ class Service(core.Construct):
             hosted_zone=hosted_zone,
         )
 
-    def add_canary(self, *, config: CanaryConfig):
-        self.canary = Canary(
-            self,
-            "Canary",
-            commit_sha=config.commit_sha,
-            version=config.version,
-            health_check_url=config.health_check_url,
-        )
-        self.canary.add_dependency(self.api_lambda.handler)
-
-    def add_pre_deploy(self, *, config: CustomResourceConfig):
-        pre_deploy_lambda = self.make_function(
-            "PreDeployLambda", source_path=config.source_path
-        )
-
-        self.pre_deploy = CustomResource(
-            self,
-            "PreDeploy",
-            on_event_handler=pre_deploy_lambda.handler,
-            resource_properties=config.properties,
-        )
-
-    def add_post_deploy(self, *, config: CustomResourceConfig):
-        post_deploy_lambda = self.make_function(
-            "PostDeployLambda", source_path=config.source_path
-        )
-
-        self.post_deploy = CustomResource(
-            self,
-            "PostDeploy",
-            on_event_handler=post_deploy_lambda.handler,
-            resource_properties=config.properties,
-        )
-        if self.canary:
-            self.post_deploy.resource.node.add_dependency(self.canary.resource)
-        else:
-            self.post_deploy.resource.node.add_dependency(
-                self.api_lambda.handler
+    def add_canary(self, *, config: Optional[CanaryConfig]):
+        if config:
+            self.canary = Canary(
+                self,
+                "Canary",
+                commit_sha=config.commit_sha,
+                version=config.version,
+                health_check_url=config.health_check_url,
             )
+            self.canary.add_dependency(self.api_lambda.handler)
+
+    def add_pre_deploy(self, *, config: Optional[CustomResourceConfig]):
+        if config:
+            pre_deploy_lambda = self.make_function(
+                "PreDeployLambda", source_path=config.source_path
+            )
+
+            self.pre_deploy = CustomResource(
+                self,
+                "PreDeploy",
+                on_event_handler=pre_deploy_lambda.handler,
+                resource_properties=config.properties,
+            )
+
+    def add_post_deploy(self, *, config: Optional[CustomResourceConfig]):
+        if config:
+            post_deploy_lambda = self.make_function(
+                "PostDeployLambda", source_path=config.source_path
+            )
+
+            self.post_deploy = CustomResource(
+                self,
+                "PostDeploy",
+                on_event_handler=post_deploy_lambda.handler,
+                resource_properties=config.properties,
+            )
+            if self.canary:
+                self.post_deploy.resource.node.add_dependency(
+                    self.canary.resource
+                )
+            else:
+                self.post_deploy.resource.node.add_dependency(
+                    self.api_lambda.handler
+                )
+
+    def allow_connection_to(self, other: IConnectable, port_range: ec2.Port):
+        if self.pre_deploy:
+            other.connections.allow_from(
+                self.pre_deploy.on_event_handler, port_range
+            )
+        if self.post_deploy:
+            other.connections.allow_from(
+                self.post_deploy.on_event_handler, port_range
+            )
+        other.connections.allow_from(self.api_lambda.handler, port_range)

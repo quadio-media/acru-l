@@ -21,6 +21,7 @@ class NetworkStack(BaseStack):
         VPC(
             self,
             "VPC",
+            name=config.vpc.name,
             cidr=config.vpc.cidr,
             export_name=config.vpc.export_name,
         )
@@ -31,4 +32,6 @@ class NetworkStack(BaseStack):
                 domain_name=config.hosted_zone.domain_name,
                 export_name=config.hosted_zone.export_name,
                 use_github_pages=config.hosted_zone.use_github_pages,
+                github_username=config.hosted_zone.github_username,
+                github_cname=config.hosted_zone.github_cname,
             )

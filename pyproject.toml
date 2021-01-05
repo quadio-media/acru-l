@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acru-l"
-version = "0.1.4"
+version = "0.1.5"
 description = ""
 authors = ["Anthony Almarza <anthony.almarza@gmail.com>"]
 license = "MIT"
@@ -15,6 +15,9 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
+toml = "^0.10.2"
+pydantic = "^1.7.3"
+acru-l-toolkit = "^1.0.0-alpha"
 "aws-cdk.core" = "1.79.0"
 "aws-cdk.custom-resources" = "1.79.0"
 "aws-cdk.aws-secretsmanager" = "1.79.0"
@@ -27,13 +30,9 @@ python = "^3.8"
 "aws-cdk.aws-events-targets" = "1.79.0"
 "aws-cdk.aws-dynamodb" = "1.79.0"
 "aws-cdk.aws-rds" = "1.79.0"
-environs = "^9.2.0"
-pydantic = "^1.7.3"
 "aws-cdk.aws-lambda-python" = "1.79.0"
 "aws-cdk.aws-lambda-nodejs" = "1.79.0"
 "aws-cdk.aws-apigatewayv2-integrations" = "1.79.0"
-acru-l-toolkit = "^0.1.0"
-toml = "^0.10.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6"
@@ -50,6 +49,22 @@ factory-boy = "^3.1.0"
 codecov = "^2.1.11"
 coverage = {extras = ["toml"], version = "^5.3"}
 ipython = "^7.19.0"
+environs = "^9.3.0"
+boto3 = "^1.16.47"
+requests = "^2.25.1"
+pyproject-script = "^0.0.0-alpha.0"
+pre-commit = "^2.9.3"
+Sphinx = "^3.4.1"
+sphinx-sitemap = "^2.2.0"
+sphinx-pyreverse = "^0.0.13"
+sphinx-autodoc-typehints = "^1.11.1"
+sphinx-autobuild = "^2020.9.1"
+recommonmark = "^0.7.1"
+
+[tool.pyscript]
+tests = "scripts.tests:main"
+docs-autobuild = "scripts.docs_autobuild:main"
+docs-build = "scripts.docs_build:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
