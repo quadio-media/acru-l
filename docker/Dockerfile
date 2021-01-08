@@ -8,9 +8,9 @@ RUN apt-get update -y \
         build-essential \
         git \
         nodejs \
-        curl \
-        docker
+        curl
 
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 RUN curl https://www.npmjs.com/install.sh | sh
 RUN npm install npm@latest -g && npm install -g aws-cdk@${AWS_CDK_VERSION}
 
