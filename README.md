@@ -11,22 +11,6 @@ An open source framework for collecting and reusing AWS CDK constructs and stack
 > NOTE: This project is currently not stable (alpha releases only) and is subject change at any time.
 > Please use at your own risk.
 
-## Why?
-The problem with infrastructure as code ...
-
-Monorepos...
-Snowflake code...
-
-Confounding application source code with devops
-
-A strict interface and reuse patterns
-
-## Installation
-
-`poetry add -D acru-l`
-
-`pip install acru-l`
-
 ## Usage: ACRU-L Action
 
 This action provisions AWS stacks given an ACRU-L configuration file. The intention is to encapsulate
@@ -72,6 +56,24 @@ The following settings must be passed as environment variables as shown in the e
 ## License
 
 This project is distributed under the [MIT license](LICENSE).
+
+
+## Why?
+The problem with infrastructure as code ...
+
+Monorepos...
+Snowflake code...
+
+Confounding application source code with devops
+
+A strict interface and reuse patterns
+
+## Installation
+
+`poetry add -D acru-l`
+
+`pip install acru-l`
+
 
 
 ## About
