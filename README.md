@@ -43,7 +43,7 @@ The goal is to avoid conflating microservice application code with "infrastructu
 ## Example usage
 
 ```yaml
-uses: quadio-media/acru-l-action@1.0.0a0
+uses: quadio-media/acru-l@1.0.0a0
 with:
   subcommand: deploy -f
 env:
