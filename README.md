@@ -8,6 +8,9 @@ Pronounced _Ah-crew-el (*ə-kroo͞′l*)_
 
 An open source framework for collecting and reusing AWS CDK constructs and stacks.
 
+> NOTE: This project is currently not stable (alpha releases only) and is subject change at any time.
+> Please use at your own risk.
+
 ## Why?
 The problem with infrastructure as code ...
 
@@ -40,7 +43,7 @@ The goal is to avoid conflating microservice application code with "infrastructu
 ## Example usage
 
 ```yaml
-uses: quadio-media/acru-l-action@v0.1.4
+uses: quadio-media/acru-l-action@1.0.0a0
 with:
   subcommand: deploy -f
 env:
