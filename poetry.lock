@@ -1111,20 +1111,20 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "boto3"
-version = "1.16.49"
+version = "1.16.50"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-botocore = ">=1.19.49,<1.20.0"
+botocore = ">=1.19.50,<1.20.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.19.49"
+version = "1.19.50"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -1177,7 +1177,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "click"
 version = "7.1.2"
 description = "Composable command line interface toolkit"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -1214,7 +1214,7 @@ test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
 
 [[package]]
 name = "constructs"
-version = "3.2.94"
+version = "3.2.97"
 description = "A programming model for composable configuration"
 category = "main"
 optional = false
@@ -1255,12 +1255,39 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "dnspython"
+version = "2.1.0"
+description = "DNS toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+dnssec = ["cryptography (>=2.6)"]
+doh = ["requests", "requests-toolbelt"]
+idna = ["idna (>=2.1)"]
+curio = ["curio (>=1.2)", "sniffio (>=1.1)"]
+trio = ["trio (>=0.14.0)", "sniffio (>=1.1)"]
+
+[[package]]
 name = "docutils"
 version = "0.16"
 description = "Docutils -- Python Documentation Utilities"
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[[package]]
+name = "email-validator"
+version = "1.1.2"
+description = "A robust email syntax and deliverability validation library for Python 2.x/3.x."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+dnspython = ">=1.15.0"
+idna = ">=2.0.0"
 
 [[package]]
 name = "environs"
@@ -1297,7 +1324,7 @@ doc = ["sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
 
 [[package]]
 name = "faker"
-version = "5.3.0"
+version = "5.4.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "dev"
 optional = false
@@ -1354,7 +1381,7 @@ license = ["editdistance"]
 name = "idna"
 version = "2.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -1666,6 +1693,9 @@ category = "main"
 optional = false
 python-versions = ">=3.6"
 
+[package.dependencies]
+email-validator = {version = ">=1.0.3", optional = true, markers = "extra == \"email\""}
+
 [package.extras]
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
@@ -1697,11 +1727,14 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "pyproject-script"
-version = "0.0.0a0"
+version = "0.0.0a1"
 description = ""
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
+
+[package.dependencies]
+toml = ">=0.10.2,<0.11.0"
 
 [[package]]
 name = "pytest"
@@ -1803,7 +1836,7 @@ six = ">=1.5"
 name = "python-dotenv"
 version = "0.15.0"
 description = "Add .env support to your django/flask apps in development and deployments"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -1910,7 +1943,7 @@ python-versions = "*"
 
 [[package]]
 name = "sphinx"
-version = "3.4.2"
+version = "3.4.3"
 description = "Python documentation generator"
 category = "dev"
 optional = false
@@ -2168,7 +2201,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c92df9e54d175895c7552a4c06a1fd33825cf6c537a195cd1645e6008cd5b0a4"
+content-hash = "706c5674d879a990e8b3f4e90e0c69dbc92ca421d60d4d61c2933d02db5bd7a5"
 
 [metadata.files]
 acru-l-toolkit = [
@@ -2423,12 +2456,12 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 boto3 = [
-    {file = "boto3-1.16.49-py2.py3-none-any.whl", hash = "sha256:999e01f2e8a6a83e4c3942cf94ba18965af23e7a370b1c7b0c3afdc6f7a1a317"},
-    {file = "boto3-1.16.49.tar.gz", hash = "sha256:4dc8f76109891d916b894209865f4d968e64aaffa4c92147ff027cf4d557ac6c"},
+    {file = "boto3-1.16.50-py2.py3-none-any.whl", hash = "sha256:ea860397e6c635284533bbc16fc77cdcfd96a78242c5ab6f2ffe2b43722802ce"},
+    {file = "boto3-1.16.50.tar.gz", hash = "sha256:4d502a842b81fdac4b950d3b88a5b9067ce118213b122b20f4192003cb067986"},
 ]
 botocore = [
-    {file = "botocore-1.19.49-py2.py3-none-any.whl", hash = "sha256:badb01925850fe51d51b9cbbe9144cebcc34b9aed2bb29cddd26c123a9e92fca"},
-    {file = "botocore-1.19.49.tar.gz", hash = "sha256:eecc611ed386dec8e47ca087f45e65c1337946c4b5b33af71325ef9a49ae70dd"},
+    {file = "botocore-1.19.50-py2.py3-none-any.whl", hash = "sha256:87efa9399a1a61c03d484d720d6f4ef0b76a3039f29953ff819ae0cb25e0e21c"},
+    {file = "botocore-1.19.50.tar.gz", hash = "sha256:709090ba61bba7dfa831b437d61cb469a85298d8f3ce5b8e12cdf41bd2b2bc61"},
 ]
 cattrs = [
     {file = "cattrs-1.1.2-py3-none-any.whl", hash = "sha256:967ce8f99b79f112a500fc03d02c4da669966055ea190b0c59a023af0ae33e5f"},
@@ -2464,8 +2497,8 @@ commonmark = [
     {file = "commonmark-0.9.1.tar.gz", hash = "sha256:452f9dc859be7f06631ddcb328b6919c67984aca654e5fefb3914d54691aed60"},
 ]
 constructs = [
-    {file = "constructs-3.2.94-py3-none-any.whl", hash = "sha256:4b06a72f89496d99965a372a170cd91db14556f22a7386ae1599d54a565c24b1"},
-    {file = "constructs-3.2.94.tar.gz", hash = "sha256:86f94204e582f2b46f254945aacec11177fe644e1d8e8be2b05c2faf7e1a6216"},
+    {file = "constructs-3.2.97-py3-none-any.whl", hash = "sha256:be376f6d0b352a659db372a217c3b3e1707d58b58134f2e546e4ee8429265a4b"},
+    {file = "constructs-3.2.97.tar.gz", hash = "sha256:30b4a7ffb6c6719275e1fed8a4e491f37db12b08537d40244da6bae8cd51ba0c"},
 ]
 coverage = [
     {file = "coverage-5.3.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:fabeeb121735d47d8eab8671b6b031ce08514c86b7ad8f7d5490a7b6dcd6267d"},
@@ -2526,9 +2559,17 @@ distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
     {file = "distlib-0.3.1.zip", hash = "sha256:edf6116872c863e1aa9d5bb7cb5e05a022c519a4594dc703843343a9ddd9bff1"},
 ]
+dnspython = [
+    {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
+    {file = "dnspython-2.1.0.zip", hash = "sha256:e4a87f0b573201a0f3727fa18a516b055fd1107e0e5477cded4a2de497df1dd4"},
+]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
     {file = "docutils-0.16.tar.gz", hash = "sha256:c2de3a60e9e7d07be26b7f2b00ca0309c207e06c100f9cc2a94931fc75a478fc"},
+]
+email-validator = [
+    {file = "email-validator-1.1.2.tar.gz", hash = "sha256:1a13bd6050d1db4475f13e444e169b6fe872434922d38968c67cea9568cce2f0"},
+    {file = "email_validator-1.1.2-py2.py3-none-any.whl", hash = "sha256:094b1d1c60d790649989d38d34f69e1ef07792366277a2cf88684d03495d018f"},
 ]
 environs = [
     {file = "environs-9.3.0-py2.py3-none-any.whl", hash = "sha256:dc279947d8ce83df334031f648aa8fe4bbba12c1e3072b2eecce2ee2be8ada21"},
@@ -2539,8 +2580,8 @@ factory-boy = [
     {file = "factory_boy-3.2.0.tar.gz", hash = "sha256:401cc00ff339a022f84d64a4339503d1689e8263a4478d876e58a3295b155c5b"},
 ]
 faker = [
-    {file = "Faker-5.3.0-py3-none-any.whl", hash = "sha256:7e98483fc273ec5cfe1c9efa9b99adaa2de4c6b610fbc62d3767088e4974b0ce"},
-    {file = "Faker-5.3.0.tar.gz", hash = "sha256:7b0c4bb678be21a68640007f254259c73d18f7996a3448267716423360519732"},
+    {file = "Faker-5.4.0-py3-none-any.whl", hash = "sha256:d70983d5e623976e9e8987e9a39e8d55378e66049f393db35ea9a37b3190085f"},
+    {file = "Faker-5.4.0.tar.gz", hash = "sha256:bd56ab94b9ae45df3cdb6ef3ca3c2be2617e6a640699deb74394143d220faf04"},
 ]
 filelock = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
@@ -2749,8 +2790,8 @@ pyparsing = [
     {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
 ]
 pyproject-script = [
-    {file = "pyproject-script-0.0.0a0.tar.gz", hash = "sha256:161b1f7244661e00c2952853e737c76504523a39752898d2b3bf400049089090"},
-    {file = "pyproject_script-0.0.0a0-py3-none-any.whl", hash = "sha256:75e0f9290d362660726fb97bb077ae9769f8320cc102dfa64fcae2f359cfd9ba"},
+    {file = "pyproject-script-0.0.0a1.tar.gz", hash = "sha256:7f9581a38b9599cef45fe18630622ec0e124fa00f5adcc9edcc531a51719bd06"},
+    {file = "pyproject_script-0.0.0a1-py3-none-any.whl", hash = "sha256:cf8ebc6ce23a004ef3add9375d3e4865700a5396577370a36fe5e373ecfc2dbb"},
 ]
 pytest = [
     {file = "pytest-6.2.1-py3-none-any.whl", hash = "sha256:1969f797a1a0dbd8ccf0fecc80262312729afea9c17f1d70ebf85c5e76c6f7c8"},
@@ -2870,8 +2911,8 @@ snowballstemmer = [
     {file = "snowballstemmer-2.0.0.tar.gz", hash = "sha256:df3bac3df4c2c01363f3dd2cfa78cce2840a79b9f1c2d2de9ce8d31683992f52"},
 ]
 sphinx = [
-    {file = "Sphinx-3.4.2-py3-none-any.whl", hash = "sha256:b8aa4eb5502c53d3b5ca13a07abeedacd887f7770c198952fd5b9530d973e767"},
-    {file = "Sphinx-3.4.2.tar.gz", hash = "sha256:77dec5ac77ca46eee54f59cf477780f4fb23327b3339ef39c8471abb829c1285"},
+    {file = "Sphinx-3.4.3-py3-none-any.whl", hash = "sha256:c314c857e7cd47c856d2c5adff514ac2e6495f8b8e0f886a8a37e9305dfea0d8"},
+    {file = "Sphinx-3.4.3.tar.gz", hash = "sha256:41cad293f954f7d37f803d97eb184158cfd90f51195131e94875bc07cd08b93c"},
 ]
 sphinx-autobuild = [
     {file = "sphinx-autobuild-2020.9.1.tar.gz", hash = "sha256:4b184a7db893f2100bbd831991ae54ca89167a2b9ce68faea71eaa9e37716aed"},

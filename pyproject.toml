@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acru-l"
-version = "0.1.5"
+version = "1.0.0-alpha"
 description = ""
 authors = ["Anthony Almarza <anthony.almarza@gmail.com>"]
 license = "MIT"
@@ -16,7 +16,9 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.8"
 toml = "^0.10.2"
-pydantic = "^1.7.3"
+pydantic = {extras = ["email"], version = "^1.7.3"}
+python-dotenv = "^0.15.0"
+click = "^7.1.2"
 acru-l-toolkit = "^1.0.0-alpha"
 "aws-cdk.core" = "1.79.0"
 "aws-cdk.custom-resources" = "1.79.0"

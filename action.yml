@@ -1,0 +1,16 @@
+name: acru-l
+description: 'ACRU-L configuration execution'
+author: 'Quadio'
+inputs:
+  subcommand:
+    description: 'Subcommand to use'
+    default: 'deploy -f --require-approval=never'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.subcommand }}
+branding:
+  icon: arrow-up-circle
+  color: gray-dark

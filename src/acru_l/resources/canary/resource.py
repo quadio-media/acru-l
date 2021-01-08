@@ -14,7 +14,7 @@ class Canary(core.Construct):
         scope: core.Construct,
         id: str,
         *,
-        commit_sha: str,
+        deploy_id: str,
         version: str,
         health_check_url: str
     ):
@@ -26,7 +26,7 @@ class Canary(core.Construct):
             index="handler.py",
             handler="main",
             resource_properties={
-                "commit_sha": commit_sha,
+                "deploy_id": deploy_id,
                 "version": version,
                 "health_check_url": health_check_url,
             },

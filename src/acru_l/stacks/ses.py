@@ -1,23 +1,30 @@
-from aws_cdk import core, aws_route53 as route53
+from typing import List, Optional
 
+from aws_cdk import aws_route53 as route53
+from pydantic import BaseModel
+
+from acru_l.core import Stack, StackFactory
 from acru_l.resources.ses import SESVerification
-from acru_l.stacks.base import BaseStack
-from acru_l.stacks.config import SESConfig
 
 
-class EmailsStack(BaseStack):
+class SESOptions(BaseModel):
+    hosted_zone_domain_name: str
+    emails: Optional[List[str]] = None
 
-    config_class = SESConfig
-    config: SESConfig
 
-    def __init__(
-        self, scope: core.Construct, id: str, env: core.Environment, **kwargs
-    ):
-        super().__init__(scope, id, env=env, **kwargs)
-        config = self.config
+class EmailsStack(Stack):
+    def build(self, options: SESOptions):
         hosted_zone = route53.HostedZone.from_lookup(
-            self, "HostedZone", domain_name=config.hosted_zone_domain_name
+            self, "HostedZone", domain_name=options.hosted_zone_domain_name
         )
         SESVerification(
-            self, "Verification", hosted_zone=hosted_zone, emails=config.emails
+            self,
+            "Verification",
+            hosted_zone=hosted_zone,
+            emails=options.emails,
         )
+
+
+class EmailsStackFactory(StackFactory):
+    stack_class = EmailsStack
+    options_class = SESOptions

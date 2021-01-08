@@ -1,37 +1,36 @@
-from acru_l.resources.hosted_zone import HostedZone
+from typing import Optional
+
+from pydantic import BaseModel
+
+from acru_l.core import Stack, StackFactory
 from acru_l.resources.vpc import VPC
-from acru_l.stacks.base import BaseStack
-from aws_cdk import (
-    core,
-)
-
-from acru_l.stacks.config import NetworkConfig
+from acru_l.stacks.certs import HostedZoneOptions
 
 
-class NetworkStack(BaseStack):
+class VpcOptions(BaseModel):
+    name: str
+    cidr: str
+    export_name: str
 
-    config_class = NetworkConfig
-    config: NetworkConfig
 
-    def __init__(
-        self, scope: core.Construct, id: str, env: core.Environment, **kwargs
-    ):
-        super().__init__(scope, id, env=env, **kwargs)
-        config = self.config
+class NetworkOptions(BaseModel):
+    vpc: VpcOptions
+    hosted_zone: Optional[HostedZoneOptions] = None
+
+
+class NetworkStack(Stack):
+    def build(self, options: NetworkOptions):
         VPC(
             self,
             "VPC",
-            name=config.vpc.name,
-            cidr=config.vpc.cidr,
-            export_name=config.vpc.export_name,
+            name=options.vpc.name,
+            cidr=options.vpc.cidr,
+            export_name=options.vpc.export_name,
         )
-        if config.hosted_zone is not None:
-            HostedZone(
-                self,
-                "HostedZone",
-                domain_name=config.hosted_zone.domain_name,
-                export_name=config.hosted_zone.export_name,
-                use_github_pages=config.hosted_zone.use_github_pages,
-                github_username=config.hosted_zone.github_username,
-                github_cname=config.hosted_zone.github_cname,
-            )
+        if options.hosted_zone is not None:
+            options.hosted_zone.build(self, "HostedZone")
+
+
+class NetworkStackFactory(StackFactory):
+    stack_class = NetworkStack
+    options_class = NetworkOptions

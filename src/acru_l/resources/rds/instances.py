@@ -8,44 +8,54 @@ from aws_cdk import (
     aws_cloudwatch as cloudwatch,
     aws_rds as rds,
 )
+from pydantic import BaseModel
 
 
-# TODO: add option for db proxy
-# https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-rds.DatabaseProxy.html
-# https://docs.aws.amazon.com/cdk/api/latest/docs/aws-rds-readme.html#creating-a-database-proxy
-# https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-rds.DatabaseInstanceReadReplica.html
+class RDSInstanceOptions(BaseModel):
+    db_name: str
+    db_username: str
+    add_proxy: bool = False
+    multi_az: bool = False
+    deletion_protection: bool = False
+    setup_alarms: bool = False
+    instance_class: str = "BURSTABLE3"
+    instance_size: str = "MICRO"
+
+    allocated_storage: int = 20
+    port: int = 5432
+    removal_policy: core.RemovalPolicy = core.RemovalPolicy.DESTROY
+    storage_type: rds.StorageType = rds.StorageType.STANDARD
+    storage_encrypted: bool = True
+    backup_retention: int = 1
+    monitoring_interval: int = 60
+    enable_performance_insights: bool = True
+    cloudwatch_logs_retention: logs.RetentionDays = (
+        logs.RetentionDays.ONE_MONTH
+    )  # noqa: E501
+    auto_minor_version_upgrade: bool = True
+
+    @property
+    def instance_type(self) -> ec2.InstanceType:
+        return ec2.InstanceType.of(
+            getattr(ec2.InstanceClass, self.instance_class),
+            getattr(ec2.InstanceSize, self.instance_size),
+        )
+
+
 class RDSInstance(core.Construct):
     def __init__(
         self,
         scope: core.Construct,
         id: str,
         *,
-        db_name: str,
-        db_username: str,
-        add_proxy: bool,
         vpc: ec2.Vpc,
         engine: rds.IInstanceEngine,
-        allocated_storage=20,
-        deletion_protection: bool = False,
-        port: int = 5432,
-        instance_type: ec2.InstanceType = ec2.InstanceType.of(
-            ec2.InstanceClass.BURSTABLE3,
-            ec2.InstanceSize.MICRO,
-        ),
-        removal_policy: core.RemovalPolicy = core.RemovalPolicy.DESTROY,
-        multi_az: bool = False,
-        storage_type: rds.StorageType = rds.StorageType.STANDARD,
-        storage_encrypted: bool = True,
-        backup_retention: int = 1,
-        monitoring_interval: int = 60,
-        enable_performance_insights: bool = True,
-        cloudwatch_logs_retention: logs.RetentionDays = logs.RetentionDays.ONE_MONTH,  # noqa: E501
-        auto_minor_version_upgrade: bool = True,
+        options: RDSInstanceOptions,
     ):
         super().__init__(scope, id)
         self.id = id
-        self.db_name = db_name
-        self.db_username = db_username
+        self.db_name = options.db_name
+        self.db_username = options.db_username
 
         # Creates a security group for AWS RDS
         sg_rds = ec2.SecurityGroup(
@@ -58,7 +68,7 @@ class RDSInstance(core.Construct):
         # to access the database.
         sg_rds.add_ingress_rule(
             peer=ec2.Peer.ipv4(vpc.vpc_cidr_block),
-            connection=ec2.Port.tcp(port),
+            connection=ec2.Port.tcp(options.port),
         )
         self.creds = secretsmanager.Secret(
             self,
@@ -67,38 +77,42 @@ class RDSInstance(core.Construct):
                 exclude_punctuation=True,
                 include_space=False,
                 generate_string_key="password",
-                secret_string_template=json.dumps({"username": db_username}),
+                secret_string_template=json.dumps(
+                    {"username": options.db_username}
+                ),
             ),
         )
 
         self.instance = rds.DatabaseInstance(
             self,
             "Instance",
-            allocated_storage=allocated_storage,
-            deletion_protection=deletion_protection,
+            allocated_storage=options.allocated_storage,
+            deletion_protection=options.deletion_protection,
             credentials=rds.Credentials.from_password(
-                username=db_username,
+                username=options.db_username,
                 password=self.creds.secret_value_from_json("password"),
             ),
             security_groups=[sg_rds],
-            database_name=db_name,
+            database_name=options.db_name,
             engine=engine,
             vpc=vpc,
-            port=port,
-            instance_type=instance_type,
-            removal_policy=removal_policy,
-            multi_az=multi_az,
-            storage_type=storage_type,
-            storage_encrypted=storage_encrypted,
-            backup_retention=core.Duration.days(backup_retention),
-            monitoring_interval=core.Duration.seconds(monitoring_interval),
-            enable_performance_insights=enable_performance_insights,
-            cloudwatch_logs_retention=cloudwatch_logs_retention,
-            auto_minor_version_upgrade=auto_minor_version_upgrade,
+            port=options.port,
+            instance_type=options.instance_type,
+            removal_policy=options.removal_policy,
+            multi_az=options.multi_az,
+            storage_type=options.storage_type,
+            storage_encrypted=options.storage_encrypted,
+            backup_retention=core.Duration.days(options.backup_retention),
+            monitoring_interval=core.Duration.seconds(
+                options.monitoring_interval
+            ),
+            enable_performance_insights=options.enable_performance_insights,
+            cloudwatch_logs_retention=options.cloudwatch_logs_retention,
+            auto_minor_version_upgrade=options.auto_minor_version_upgrade,
         )
-        self.port = port
+        self.port = options.port
         self.proxy = None
-        if add_proxy:
+        if options.add_proxy:
             self.proxy = self.instance.add_proxy(
                 "Proxy",
                 secrets=[self.creds],
@@ -106,6 +120,8 @@ class RDSInstance(core.Construct):
                 db_proxy_name=f"{scope.stack_name}-{id}-Proxy",
                 security_groups=[sg_rds],
             )
+        if options.setup_alarms:
+            self.setup_alarms()
 
     @property
     def connection_interface(self):

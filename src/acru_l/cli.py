@@ -1,11 +1,11 @@
-import os
-
+#!/usr/bin/env python3
 from acru_l.core import app_factory
 
 
-os.environ.setdefault("FOO", "bar")
-
-
-def test_acru_l():
+def main():
     app = app_factory()
     app.synth()
+
+
+if __name__ == "__main__":
+    main()
