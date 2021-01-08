@@ -1,10 +1,17 @@
-name: Build and Push Docker
+name: Action Build
+
 on:
   push:
     branches:
       - release/*
     tags-ignore:
       - '*'
+
+env:
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -27,3 +34,27 @@ jobs:
           file: ./docker/Dockerfile
           tags: quadiomedia/acru-l:${{ env.RELEASE_VERSION }}
           push: true
+  test:
+    needs:
+      - build-and-push
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        aws_region:
+          - us-east-1
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy
+        uses: ./
+        with:
+          subcommand: deploy -f
+        env:
+          AWS_REGION: ${{ matrix.aws_region }}
+          DEPLOY_ID: ${{ github.sha }}
+      - name: destroy stack
+        uses: ./
+        with:
+          subcommand: destroy -f
+        env:
+          AWS_REGION: ${{ matrix.aws_region }}
+          DEPLOY_ID: ${{ github.sha }}
