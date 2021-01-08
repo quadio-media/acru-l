@@ -58,8 +58,8 @@ The following settings must be passed as environment variables as shown in the e
 | `AWS_ACCESS_KEY_ID` | Your AWS Access Key. [More info here.](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) | `secret env` | **Yes** | N/A |
 | `AWS_SECRET_ACCESS_KEY` | Your AWS Secret Access Key. [More info here.](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) | `secret env` | **Yes** | N/A |
 | `AWS_REGION` | The region you want the VPC Stack to live in. | `env` | **Yes** | N/A |
-| `COMMIT_SHA` | SHA of the commit that triggered the action. | `env` / `github.sha` | **Yes** | N/A |
-| `CONFIG_FILE_PATH` | Path to the ACRU-L configuration file to use. | `env` | No | `./acru-l.toml` |
+| `DEPLOY_ID` | SHA of the commit that triggered the action. | `env` / `github.sha` | **Yes** | N/A |
+| `ACRUL_CONFIG_PATH` | Path to the ACRU-L configuration file to use. | `env` | No | `./acru-l.toml` |
 
 
 ## License
