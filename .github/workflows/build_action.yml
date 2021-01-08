@@ -16,6 +16,8 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ACRUL_CONFIG_PATH: ./tests/fixtures/config/acru-l.toml
+  DEPLOY_ID: ${{ github.sha }}
+
 
 jobs:
   build-and-push:
@@ -49,17 +51,22 @@ jobs:
           - us-east-1
     steps:
       - uses: actions/checkout@v2
+      - name: Synth
+        uses: ./
+        with:
+          subcommand: synthesize
+        env:
+          AWS_REGION: ${{ matrix.aws_region }}
+          ACRUL_CONFIG_PATH: ./tests/fixtures/config/lucario.toml
       - name: deploy
         uses: ./
         with:
           subcommand: deploy -f
         env:
           AWS_REGION: ${{ matrix.aws_region }}
-          DEPLOY_ID: ${{ github.sha }}
       - name: destroy stack
         uses: ./
         with:
           subcommand: destroy -f
         env:
           AWS_REGION: ${{ matrix.aws_region }}
-          DEPLOY_ID: ${{ github.sha }}
