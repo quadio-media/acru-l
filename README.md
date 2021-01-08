@@ -2,6 +2,7 @@
 
 [![codecov](https://codecov.io/gh/quadio-media/acru-l/branch/main/graph/badge.svg?token=kWn6eJxFwr)](https://codecov.io/gh/quadio-media/acru-l)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Build](https://github.com/quadio-media/acru-l/workflows/Build/badge.svg)
 
 Pronounced _Ah-crew-el (*ə-kroo͞′l*)_
 
