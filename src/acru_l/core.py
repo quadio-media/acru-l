@@ -69,7 +69,7 @@ def app_factory(
     deploy_id: Optional[str] = None,
     config_path: Optional[str] = None,
     section: Optional[str] = None,
-):
+) -> "App":
     default_settings = {}
     if account:
         default_settings["AWS_ACCOUNT_ID"] = account
@@ -194,40 +194,7 @@ class Stack(core.Stack):
         self.build(options=options)
 
     def build(self, options: pydantic.BaseModel):
-        pass
-
-
-class Construct(core.Construct):
-    def __init__(
-        self,
-        scope: core.Construct,
-        id: str,
-        *,
-        options: Optional[pydantic.BaseModel] = None
-    ):
-        super().__init__(scope, id)
-        self.build(options)
-
-    def build(self, options: Optional[pydantic.BaseModel]):
-        pass
-
-
-class ConstructFactory:
-    construct_class: Type[Construct]
-    options_class: Type[pydantic.BaseModel]
-
-    def __init__(self, construct_class, options_class):
-        self.construct_class = construct_class
-        self.options_class = options_class
-
-    def build(
-        self, scope: core.Construct, id: str, *, options: Optional[Dict]
-    ):
-        return self.construct_class(
-            scope=scope,
-            id=id,
-            options=self.options_class(**options) if options else None,
-        )
+        pass  # pragma: no cover
 
 
 class StackFactory:

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from acru_l.core import Stack, StackFactory
 from acru_l.resources.vpc import VPC
-from acru_l.stacks.certs import HostedZoneOptions
+from acru_l.stacks.certs import HostedZoneFactory
 
 
 class VpcOptions(BaseModel):
@@ -15,7 +15,7 @@ class VpcOptions(BaseModel):
 
 class NetworkOptions(BaseModel):
     vpc: VpcOptions
-    hosted_zone: Optional[HostedZoneOptions] = None
+    hosted_zone: Optional[HostedZoneFactory] = None
 
 
 class NetworkStack(Stack):
@@ -28,7 +28,7 @@ class NetworkStack(Stack):
             export_name=options.vpc.export_name,
         )
         if options.hosted_zone is not None:
-            options.hosted_zone.build(self, "HostedZone")
+            options.hosted_zone.build(self)
 
 
 class NetworkStackFactory(StackFactory):

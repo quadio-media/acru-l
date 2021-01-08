@@ -1,0 +1,12 @@
+[[tool.acru-l.stacks]]
+id = "MyNetwork"
+factory = "acru_l.stacks.network.NetworkStackFactory"
+[tool.acru-l.stacks.options.vpc]
+name = "ID"
+cidr = "10.12.0.0/16"
+export_name = "MyVPC"
+[tool.acru-l.stacks.options.hosted_zone]
+name = "MyZone"
+domain_name = "quadio.app"
+export_name = "MyHostedZone"
+use_github_pages = true

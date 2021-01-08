@@ -70,12 +70,12 @@ class LucarioStack(Stack):
 
         certificate = acm.Certificate.from_certificate_arn(
             self,
-            f"{id}Certificate",
+            "Certificate",
             core.Fn.import_value(options.cert_export_name),
         )
         self.service = WSGIService(
             self,
-            f"{id}Service",
+            "Service",
             vpc=vpc,
             certificate=certificate,
             hosted_zone=hosted_zone,

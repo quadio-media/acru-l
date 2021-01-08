@@ -1,5 +1,8 @@
 # AWS Cloud Resource Utils - Library (ACRU-L)
 
+[![codecov](https://codecov.io/gh/quadio-media/acru-l/branch/main/graph/badge.svg?token=kWn6eJxFwr)](https://codecov.io/gh/quadio-media/acru-l)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Pronounced _Ah-crew-el (*ə-kroo͞′l*)_
 
 An open source framework for collecting and reusing AWS CDK constructs and stacks.

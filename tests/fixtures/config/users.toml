@@ -1,0 +1,94 @@
+[[tool.acru-l.stacks]]
+
+id = "MyUsersService"
+factory = "acru_l.stacks.users.UsersStackFactory"
+
+[tool.acru-l.stacks.options]
+export_name = "CoolUsersARN"
+
+[tool.acru-l.stacks.options.user_pool]
+user_pool_name = "CoolUsers"
+self_signup_enabled = true
+sign_in_case_sensitive = true
+sign_in_aliases = { email = true }
+
+[tool.acru-l.stacks.options.user_pool.email_configuration]
+from_email = "fake@email.com"
+
+[tool.acru-l.stacks.options.user_pool.password_policy]
+min_length = 12
+require_digits = true
+require_lowercase = true
+require_symbols = true
+require_uppercase = true
+temp_password_validity = 1
+
+[tool.acru-l.stacks.options.user_pool.invitation_options]
+subject = "./tests/fixtures/subject.txt"
+body = "./tests/fixtures/body.html"
+sms = "./tests/fixtures/sms.txt"
+
+[tool.acru-l.stacks.options.user_pool.verification_options]
+subject = "./tests/fixtures/subject.txt"
+body = "./tests/fixtures/body.html"
+sms = "./tests/fixtures/sms.txt"
+email_style = "LINK"  # "CODE"
+
+[tool.acru-l.stacks.options.user_pool.standard_attributes]
+email = {mutable = true, required = true}
+fullname = {mutable = true, required = false}
+phone_number = {mutable = true, required = false}
+profile_picture = {mutable = true, required = false}
+preferred_username = {mutable = true, required = false}
+
+[[tool.acru-l.stacks.options.user_pool.custom_attributes]]
+name = "code"
+attr_class = "aws_cdk.aws_cognito.StringAttribute"
+mutable = false
+extra = { min_len = 1, max_len = 64 }
+
+[[tool.acru-l.stacks.options.user_pool.custom_attributes]]
+name = "is_cool"
+attr_class = "aws_cdk.aws_cognito.BooleanAttribute"
+mutable = false
+
+[[tool.acru-l.stacks.options.user_pool.custom_attributes]]
+name = "last_login"
+attr_class = "aws_cdk.aws_cognito.DateTimeAttribute"
+mutable = false
+
+
+[[tool.acru-l.stacks.options.user_pool.custom_attributes]]
+name = "stars"
+attr_class = "aws_cdk.aws_cognito.NumberAttribute"
+mutable = false
+extra = { min = 1, max = 5 }
+
+
+[[tool.acru-l.stacks.options.user_pool.app_clients]]
+name = "CoolUsersClient"
+export_name = "CoolUsersClientId"
+admin_user_password = true
+user_password = true
+user_srp = true
+prevent_user_existence_errors = true
+
+[tool.acru-l.stacks.options.user_pool.domain_options]
+name = "CoolUsersDomain"
+domain_name = "cool.users.com"
+cert_export_name = "CoolUsersCert"
+
+[[tool.acru-l.stacks.options.user_pool.python_triggers]]
+operation = "POST_AUTHENTICATION"
+[tool.acru-l.stacks.options.user_pool.python_triggers.function_options]
+name = "CoolUsersPostAuth"
+source_path = "./tests/post_deploy"
+export_name = "CoolUsersPostAuthLambda"
+pool_actions = [
+    "cognito-idp:*"
+]
+layers = [
+    { name = "CoolLayer", source_path = "./tests/pre_deploy" },
+    { name = "FakeLayer", arn_export_name = "fakearn"}
+]
+tracing = "ACTIVE"

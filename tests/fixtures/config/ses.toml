@@ -1,0 +1,6 @@
+[[tool.acru-l.stacks]]
+id = "MyEmails"
+factory = "acru_l.stacks.ses.EmailsStackFactory"
+[tool.acru-l.stacks.options]
+hosted_zone_domain_name = "quadio.app"
+emails = ["admin@quadio.app", "help@quadio.app"]
