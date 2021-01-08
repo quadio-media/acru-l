@@ -1,1 +1,1 @@
-FROM quadiomedia/acru-l:1.0.0a2
+FROM quadiomedia/acru-l:1.0.0a3
