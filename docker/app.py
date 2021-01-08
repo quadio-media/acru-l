@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
-from acru_l.cli import main
+from acru_l.app import main
 
 main()

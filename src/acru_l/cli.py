@@ -1,11 +1,16 @@
-#!/usr/bin/env python3
-from acru_l.core import app_factory
+import os
+import subprocess
+import sys
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 def main():
-    app = app_factory()
-    app.synth()
-
-
-if __name__ == "__main__":
-    main()
+    dirname = os.path.dirname(__file__)
+    process = subprocess.run(
+        ["cdk", f"--app={os.path.join(dirname, 'app.py')}"] + sys.argv[1:]
+    )
+    sys.exit(process.returncode)
