@@ -59,6 +59,7 @@ jobs:
           AWS_REGION: ${{ matrix.aws_region }}
           ACRUL_CONFIG_PATH: ./tests/fixtures/config/lucario.toml
           ACRUL_SECTION: tool.acru-l
+          FOO: bar
       - name: deploy
         uses: ./
         with:
