@@ -20,30 +20,7 @@ env:
 
 
 jobs:
-#  build-and-push:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Set env
-#        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_ENV
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v1
-#      - name: Login to DockerHub
-#        uses: docker/login-action@v1
-#        with:
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
-#      - name: Push to Docker Hub
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: .
-#          file: ./docker/Dockerfile
-#          tags: quadiomedia/acru-l:${{ env.RELEASE_VERSION }}
-#          push: true
   test:
-#    needs:
-#      - build-and-push
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -57,15 +34,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 12
-      - name: Synth
-        uses: ./
-        with:
-          subcommand: synthesize
-        env:
-          AWS_REGION: ${{ matrix.aws_region }}
-          ACRUL_CONFIG_PATH: ./tests/fixtures/config/lucario.toml
-          ACRUL_SECTION: tool.acru-l
-          FOO: bar
+#      - name: Synth
+#        uses: ./
+#        with:
+#          subcommand: synthesize
+#        env:
+#          AWS_REGION: ${{ matrix.aws_region }}
+#          ACRUL_CONFIG_PATH: ./tests/fixtures/config/lucario.toml
+#          ACRUL_SECTION: tool.acru-l
+#          FOO: bar
       - name: deploy
         uses: ./
         with:
