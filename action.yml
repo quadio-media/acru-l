@@ -9,9 +9,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: npm install aws-cdk@1.79.0
+    - run: npm install -g aws-cdk@1.79.0
       shell: bash
-    - run: pip install acru-l==1.0.0a4
+    - run: pip install --upgrade pip && pip install acru-l==1.0.0a4
       shell: bash
     - run: acrul ${{ inputs.subcommand }}
       shell: bash
