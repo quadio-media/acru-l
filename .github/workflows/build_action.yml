@@ -6,6 +6,10 @@ on:
       - release/*
     tags-ignore:
       - '*'
+    paths-ignore:
+      - LICENSE
+      - '**/README.md'
+      - .gitignore
 
 env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}

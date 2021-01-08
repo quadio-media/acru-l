@@ -1,7 +1,7 @@
 [[stacks]]
 id = "AcrulAction"
-stack_class = "acru_l.stacks.certs.CertificatesStackFactory"
-[[tool.acru-l.stacks.options.hosted_zones.hosted_zone]]
+factory = "acru_l.stacks.certs.CertificatesStackFactory"
+[[stacks.options.hosted_zones.hosted_zone]]
 name = "TestZone"
 domain_name = "wedontownthis.com"
 export_name = "TestZone"
