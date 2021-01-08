@@ -8,6 +8,9 @@ Pronounced _Ah-crew-el (*ə-kroo͞′l*)_
 
 An open source framework for collecting and reusing AWS CDK constructs and stacks.
 
+> NOTE: This project is currently not stable (alpha releases only) and is subject change at any time.
+> Please use at your own risk.
+
 ## Why?
 The problem with infrastructure as code ...
 
