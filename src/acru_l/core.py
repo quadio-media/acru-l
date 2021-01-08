@@ -12,7 +12,7 @@ class Settings(pydantic.BaseSettings):
     AWS_ACCOUNT_ID: str
     AWS_REGION: str
     DEPLOY_ID: str
-    ACRUL_CONFIG_PATH: pydantic.FilePath
+    ACRUL_CONFIG_PATH: pydantic.FilePath = "./acru-l.toml"
     ACRUL_SECTION: Optional[str] = None
 
     class Config:
@@ -77,7 +77,8 @@ def app_factory(
         default_settings["AWS_REGION"] = region
     if deploy_id:
         default_settings["DEPLOY_ID"] = deploy_id
-    default_settings["ACRUL_CONFIG_PATH"] = config_path or "./acru-l.toml"
+    if config_path:
+        default_settings["ACRUL_CONFIG_PATH"] = config_path
     if section:
         default_settings["ACRUL_SECTION"] = section
 
