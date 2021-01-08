@@ -33,7 +33,7 @@ The goal is to avoid conflating microservice application code with "infrastructu
 - uses: actions/setup-node@v2
   with:
   node-version: 12
-- uses: quadio-media/acru-l@1.0.0a5
+- uses: quadio-media/acru-l@1.0.0a6
   with:
     subcommand: deploy -f
   env:

@@ -11,7 +11,7 @@ runs:
   steps:
     - run: npm install -g aws-cdk@1.79.0
       shell: bash
-    - run: pip install --upgrade pip && pip install acru-l==1.0.0a5 --quiet
+    - run: pip install --upgrade pip && pip install acru-l==1.0.0a6 --quiet
       shell: bash
     - run: acrul ${{ inputs.subcommand }}
       shell: bash
