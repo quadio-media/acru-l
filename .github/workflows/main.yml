@@ -43,6 +43,10 @@ jobs:
       #----------------------------------------------
       - name: Run Tests
         run: poetry run pyscript tests
+        env:
+          AWS_ACCOUNT_ID: fake
+          AWS_REGION: fake
+          DEPLOY_ID: ${{ github.sha }}
       #----------------------------------------------
       #             upload coverage stats
       #----------------------------------------------
