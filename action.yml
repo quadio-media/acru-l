@@ -7,10 +7,14 @@ inputs:
     default: 'deploy -f --require-approval=never'
     required: false
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.subcommand }}
+  using: 'composite'
+  steps:
+    - run: npm install -g aws-cdk@1.79.0
+      shell: bash
+    - run: pip install --upgrade pip && pip install acru-l==1.0.0a6 --quiet
+      shell: bash
+    - run: acrul ${{ inputs.subcommand }}
+      shell: bash
 branding:
   icon: arrow-up-circle
   color: gray-dark

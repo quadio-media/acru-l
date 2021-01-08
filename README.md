@@ -27,16 +27,22 @@ The goal is to avoid conflating microservice application code with "infrastructu
 ## Example usage
 
 ```yaml
-uses: quadio-media/acru-l@1.0.0a2
-with:
-  subcommand: deploy -f
-env:
-  AWS_REGION: us-east-1
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  DEPLOY_ID: ${{ github.sha }}
-  ACRUL_CONFIG_PATH: "./acru-l.toml"
+- user: actions/setup-python@v2
+  with:
+  python-version: 3.8
+- uses: actions/setup-node@v2
+  with:
+  node-version: 12
+- uses: quadio-media/acru-l@1.0.0a6
+  with:
+    subcommand: deploy -f
+  env:
+    AWS_REGION: us-east-1
+    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    DEPLOY_ID: ${{ github.sha }}
+    ACRUL_CONFIG_PATH: "./acru-l.toml"
 ```
 
 ### Configuration
